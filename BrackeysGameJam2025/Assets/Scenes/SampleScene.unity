@@ -575,6 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 3
+  rollPower: 10
 --- !u!4 &412818865
 Transform:
   m_ObjectHideFlags: 0
