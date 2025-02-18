@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator anim;
+    private SpriteRenderer sr;
 
     [SerializeField] private float movementSpeed;
     [SerializeField] private float rollPower;
@@ -15,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Update()
@@ -23,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(Roll());
         }
+
+        HandleAnimations();
+        FlipPlayer();
     }
 
     void FixedUpdate()
@@ -57,6 +64,38 @@ public class PlayerMovement : MonoBehaviour
         isRolling = false;
 
         yield return null;
+    }
+
+    private void FlipPlayer()
+    {
+        if (rb.linearVelocityX > 0)
+        {
+            sr.flipX = false;
+        }
+
+        else if (rb.linearVelocityX < 0)
+        {
+            sr.flipX = true;
+        }
+    }
+
+    private void HandleAnimations()
+    {
+        if (isRolling)
+        {
+            //Roll Anim
+            return;
+        }
+
+        if (rb.linearVelocity != Vector2.zero)
+        {
+            anim.Play("PlayerRun");
+        }
+
+        else
+        {
+            anim.Play("PlayerIdle");
+        }
     }
 
     private Vector2 GetInputDirection()
